@@ -291,6 +291,8 @@ def lambda_handler(event, context):  # pylint:disable=unused-argument
     account_id = event["Id"]
     account_name = event["Name"]
 
+    aws_session = assume_role(account_id)
+
     hosted_zones = list_hosted_zones(event)
 
     for hosted_zone in hosted_zones:
