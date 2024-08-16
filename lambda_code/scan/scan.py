@@ -2,6 +2,7 @@
 import json
 import os
 
+from utils.utils_aws import assume_role
 from utils.utils_aws import eb_susceptible
 from utils.utils_aws import get_cloudfront_s3_origin_takeover
 from utils.utils_aws import list_domains
