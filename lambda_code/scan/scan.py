@@ -292,13 +292,17 @@ def lambda_handler(event, context):  # pylint:disable=unused-argument
     account_name = event["Name"]
 
     aws_session = assume_role(account_id)
-
-    hosted_zones = list_hosted_zones(event)
+    try:
+        r53client = aws_session.client("route53")
+    except Exception:
+        print(f"ERROR: unable to assume role in {account_name} account {account_id}")
+    
+    hosted_zones = list_hosted_zones(r53client, event)
 
     for hosted_zone in hosted_zones:
         print(f"Searching for vulnerable domain records in hosted zone {hosted_zone['Name']}")
 
-        record_sets = list_resource_record_sets(account_id, account_name, hosted_zone["Id"])
+        record_sets = list_resource_record_sets(r53client, account_name, hosted_zone["Id"])
         record_sets = sanitise_wildcards(record_sets)
 
         alias_cloudfront_s3(account_name, record_sets, account_id)
