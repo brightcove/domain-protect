@@ -278,6 +278,11 @@ def get_cloudfront_s3_origin_takeover(account_id, account_name, domain):
 
 def domain_deleted(domain, account_name):
     accounts = list_accounts()
+
+    if (len(accounts) == 0):
+        print(f"No accounts found in organization")
+        return False
+
     account_id = [a for a in accounts if a["Name"] == account_name][0]["Id"]
 
     print(f"{account_name} account has ID {account_id}")
