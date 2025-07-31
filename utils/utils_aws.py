@@ -283,7 +283,13 @@ def domain_deleted(domain, account_name):
         print(f"No accounts found in organization")
         return False
 
-    account_id = [a for a in accounts if a["Name"] == account_name][0]["Id"]
+    matching_accounts = [a for a in accounts if a["Name"] == account_name]
+
+    if not matching_accounts:
+        print(f"No account found with name {account_name}")
+        return False
+
+    account_id = matching_accounts[0]["Id"]
 
     print(f"{account_name} account has ID {account_id}")
 
